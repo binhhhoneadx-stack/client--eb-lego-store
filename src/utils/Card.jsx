@@ -34,7 +34,7 @@ const Card = ({ props }) => {
     <div className="w-[210px] h-[300px] border border-gray-200 rounded-md p-5 bg-white group cursor-pointer m-auto">
       {/* image */}
       <div className="h-[60%] w-full overflow-hidden relative cursor-pointer">
-        <img src={`$${baseUrl}/${props.images[0]}`} alt="" className="object-cover w-full h-full" />
+        <img src={`${baseUrl}/${props.images[0]}`} alt="" className="object-cover w-full h-full" />
         <div className="absolute bottom-[-50px] rounded-md text-black group-hover:bottom-2 transition-all duration-500 ease-in-out left-[50%] translate-x-[-50%] flex items-center gap-5 ">
           {currentUser.isUser === false ? (
             <Link to={"/customer/account/login"}>
