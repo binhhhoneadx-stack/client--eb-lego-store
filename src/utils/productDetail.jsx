@@ -37,9 +37,9 @@ const ProductDetail = () => {
     setStock((prev) => prev + stock);
   };
 
-  const fetchAptGetItemProduct = `baseUrl/api/product/get-item-product`;
-  const fetchApiGetProductsAll = `baseUrl/api/product/get-all-products`;
-  const fetchApiCreateCart = `baseUrl/api/cart/create-cart`;
+  const fetchAptGetItemProduct = `${baseUrl}/api/product/get-item-product`;
+  const fetchApiGetProductsAll = `${baseUrl}/api/product/get-all-products`;
+  const fetchApiCreateCart = `${baseUrl}/api/cart/create-cart`;
 
   const isFetchApiGetAll = async () => {
     try {
