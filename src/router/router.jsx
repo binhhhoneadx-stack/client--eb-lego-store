@@ -19,8 +19,7 @@ import IsAddress from "../pages/isAddress";
 import CheckPassword from "../pages/Change-Password/CheckPassword";
 import LayoutChangePassword from "../Layouts/LayoutChangePassword";
 import ChangePassword from "../pages/Change-Password/ChangePassword";
-import LayoutOrder from "../Layouts/LayoutOrder";
-import CheckOutPayment from "../components/checkoutPayment";
+import CheckOutPayment from "../components/CheckOutPayment";
 import PaymentSuccess from "../pages/PaymentSuccess";
 import ListOrder from "../components/ListOrder";
 
@@ -97,33 +96,33 @@ const router = createBrowserRouter([
         path: "/user",
         element: <LayoutUser />,
         children: [
-            {
-                path: "/user/profile",
-                element: <AccountOfMe />
-            },
-            {
-                path: "/user/address",
-                element: <IsAddress />
-            },
-            {
-                path: "/user/verify",
-                element: <LayoutChangePassword />,
-                children: [
-                  {
-                    path: "/user/verify/check-password",
-                    element: <CheckPassword />
-                  },
-                  {
-                    path: "/user/verify/change-password",
-                    element: <ChangePassword />
-                  }
-                ]
-            },
-            {
-              path: "/user/order",
-              element: <ListOrder />
-            }
-        ]
+          {
+            path: "/user/profile",
+            element: <AccountOfMe />,
+          },
+          {
+            path: "/user/address",
+            element: <IsAddress />,
+          },
+          {
+            path: "/user/verify",
+            element: <LayoutChangePassword />,
+            children: [
+              {
+                path: "/user/verify/check-password",
+                element: <CheckPassword />,
+              },
+              {
+                path: "/user/verify/change-password",
+                element: <ChangePassword />,
+              },
+            ],
+          },
+          {
+            path: "/user/order",
+            element: <ListOrder />,
+          },
+        ],
       },
     ],
   },
