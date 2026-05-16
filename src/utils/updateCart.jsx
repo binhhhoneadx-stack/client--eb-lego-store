@@ -2,14 +2,13 @@ import { useState, useContext, useEffect } from "react";
 import { AppContext } from "../Context/ThemeContext";
 import axios from "axios";
 import { toast } from "react-toastify";
-
+import { baseUrl } from "../env";
 import { FaPlus, FaMinus } from "react-icons/fa";
 
 const UpdateCart = () => {
   const [stock, setStock] = useState(1);
   const [product, setProduct] = useState({});
-  const { setOpenCart, openCart, currentUser } =
-    useContext(AppContext);
+  const { setOpenCart, openCart, currentUser } = useContext(AppContext);
   /* btn giảm số lượng */
   const handleBtnMinus = () => {
     if (stock <= 1) return; // Không giảm nhỏ hơn 1
@@ -20,23 +19,17 @@ const UpdateCart = () => {
     setStock((prev) => prev + stock);
   };
 
-  const fetchApiGetItemProductInCart =
-    "http://localhost:8080/api/cart/get-item-cart";
-  const fetchApiUpdateItemProductInCart =
-    "http://localhost:8080/api/cart/update-item-cart";
+  const fetchApiGetItemProductInCart = `${baseUrl}/api/cart/get-item-cart`;
+  const fetchApiUpdateItemProductInCart = `${baseUrl}/api/cart/update-item-cart`;
 
-    
   useEffect(() => {
     const isFetchData = async () => {
       try {
-        const result = await axios.get(
-          `${fetchApiGetItemProductInCart}/${openCart?.product}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("tokenSignIN")}`,
-            },
-          }
-        );
+        const result = await axios.get(`${fetchApiGetItemProductInCart}/${openCart?.product}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("tokenSignIN")}`,
+          },
+        });
         setProduct(result.data[0]);
         setStock(result.data[0].quantity || 1);
       } catch (error) {
@@ -44,17 +37,17 @@ const UpdateCart = () => {
       }
     };
 
-    if ( openCart?.productId) {
+    if (openCart?.productId) {
       isFetchData();
     }
   }, [openCart]);
 
   const handleBtnIsUpdateCart = async () => {
     try {
-      const result = await axios.post(
-        `${fetchApiUpdateItemProductInCart}/${openCart?.product}`,
-        { stock, userId: currentUser.user._id }
-      );
+      const result = await axios.post(`${fetchApiUpdateItemProductInCart}/${openCart?.product}`, {
+        stock,
+        userId: currentUser.user._id,
+      });
       setOpenCart({ isOpen: false, product: "" });
       toast.success(result.data);
     } catch (error) {
@@ -65,13 +58,11 @@ const UpdateCart = () => {
     <div className="lg:w-[30%] w-[50%] min-h-[50%] bg-white rounded-md py-5 px-7 shadow-lg shadow-gray-300">
       <div>
         <img
-          src={`http://localhost:8080/${product?.productId?.images[0]}`}
+          src={`${baseUrl}/${product?.productId?.images[0]}`}
           alt=""
           className="w-[100px] h-[100px] rounded-full m-auto"
         />
-        <h1 className="text-[18px] font-[600] text-center my-5">
-          {product?.productId?.name}
-        </h1>
+        <h1 className="text-[18px] font-[600] text-center my-5">{product?.productId?.name}</h1>
         <div>
           <h2 className="text-[18px] font-[600]">Số lượng:</h2>
           <div className="flex items-center gap-3 mt-3">

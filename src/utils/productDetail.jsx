@@ -4,18 +4,15 @@ import Card from "../utils/Card";
 import { Link, useLocation } from "react-router-dom";
 import { AppContext } from "../Context/ThemeContext";
 import { toast } from "react-toastify";
+import { baseUrl } from "../env";
 
 // React icons
-import {
-  FaCheck,
-  FaPlus,
-  FaMinus
-} from "react-icons/fa";
+import { FaCheck, FaPlus, FaMinus } from "react-icons/fa";
 
 const ProductDetail = () => {
   const { currentUser } = useContext(AppContext);
   const [stock, setStock] = useState(1);
-  const [currentIndex, setCurrentIndex] = useState(0)
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [product, setProduct] = useState({});
   const [products, setProducts] = useState([]);
   const id = useLocation().pathname.split("/")[3];
@@ -40,39 +37,37 @@ const ProductDetail = () => {
     setStock((prev) => prev + stock);
   };
 
-  const fetchAptGetItemProduct =
-    "http://localhost:8080/api/product/get-item-product";
-  const fetchApiGetProductsAll =
-    "http://localhost:8080/api/product/get-all-products";
-  const fetchApiCreateCart = "http://localhost:8080/api/cart/create-cart";
+  const fetchAptGetItemProduct = `baseUrl/api/product/get-item-product`;
+  const fetchApiGetProductsAll = `baseUrl/api/product/get-all-products`;
+  const fetchApiCreateCart = `baseUrl/api/cart/create-cart`;
 
   const isFetchApiGetAll = async () => {
     try {
-      const productsRes = await axios.get(fetchApiGetProductsAll)
-  
+      const productsRes = await axios.get(fetchApiGetProductsAll);
+
       setProducts(productsRes.data.products || []);
     } catch (error) {
       console.error("Lỗi lấy dữ liệu:", error.response?.data || error.message);
     }
-  }
+  };
 
   const isFetchApiGetItemProduct = async () => {
     try {
-      const productRes = await axios.get(`${fetchAptGetItemProduct}/${id}`)
-  
+      const productRes = await axios.get(`${fetchAptGetItemProduct}/${id}`);
+
       setProduct(productRes.data.itemProduct || {});
     } catch (error) {
       console.error("Lỗi lấy dữ liệu:", error.response?.data || error.message);
     }
-  }
+  };
 
   useEffect(() => {
     const isFetchData = async () => {
-      await isFetchApiGetItemProduct()
-      await isFetchApiGetAll()
-    }
+      await isFetchApiGetItemProduct();
+      await isFetchApiGetAll();
+    };
 
-    isFetchData()
+    isFetchData();
   }, [id]);
 
   const handleBtnCreateCart = async () => {
@@ -88,7 +83,7 @@ const ProductDetail = () => {
         userId: currentUser.user._id,
       });
       toast.success(result.data);
-      setStock(1)
+      setStock(1);
     } catch (error) {
       toast.error(error.response?.data);
     }
@@ -101,7 +96,11 @@ const ProductDetail = () => {
         <div>
           <div className="h-[500px] w-full 2xl:w-[800px] lg:w-[550px] rounded-md overflow-hidden bg-white p-7 shadow-lg shadow-gray-400 border border-gray-300">
             {product.images && product.images.length > 0 ? (
-              <img src={`http://localhost:8080/${product.images[currentIndex]}`} alt="Product" className="w-full h-full rounded-md"/>
+              <img
+                src={`${baseUrl}/${product.images[currentIndex]}`}
+                alt="Product"
+                className="w-full h-full rounded-md"
+              />
             ) : (
               <p>Đang tải hình ảnh...</p>
             )}
@@ -109,15 +108,17 @@ const ProductDetail = () => {
 
           <div className="w-full overflow-hidden mt-7 py-4 px-7">
             <div className="flex items-center justify-center gap-7">
-              {
-                product.images?.map((item, index) => {
-                  return (
-                    <button onClick={() => setCurrentIndex(index)} key={index} className={`w-[100px] h-[100px] ${currentIndex === index ? "border-2 rounded-md overflow-hidden p-2 border-gray-400" : " border-none rounded-md overflow-hidden p-2"}`}>
-                      <img src={`http://localhost:8080/${item}`} alt="" className="w-full h-full object-cover rounded-md"/>
-                    </button>
-                  )
-                })
-              }
+              {product.images?.map((item, index) => {
+                return (
+                  <button
+                    onClick={() => setCurrentIndex(index)}
+                    key={index}
+                    className={`w-[100px] h-[100px] ${currentIndex === index ? "border-2 rounded-md overflow-hidden p-2 border-gray-400" : " border-none rounded-md overflow-hidden p-2"}`}
+                  >
+                    <img src={`${baseUrl}/${item}`} alt="" className="w-full h-full object-cover rounded-md" />
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -128,28 +129,21 @@ const ProductDetail = () => {
             {/* title */}
             <div>
               <h1 className="text-[22px] font-[600]">{product.name}</h1>
-              <h3 className="text-[25px] text-red-600 my-5 font-[700]">
-                {formatVND.format(product.price)}
-              </h3>
+              <h3 className="text-[25px] text-red-600 my-5 font-[700]">{formatVND.format(product.price)}</h3>
             </div>
             {/* service */}
             <ul>
               <li className="flex items-center gap-3 text-gray-700">
                 {" "}
-                <FaCheck size={14} />{" "}
-                <span className="text-[16px]">Hàng chính hãng</span>
+                <FaCheck size={14} /> <span className="text-[16px]">Hàng chính hãng</span>
               </li>
               <li className="flex items-center gap-3 text-gray-700">
                 {" "}
-                <FaCheck size={14} />{" "}
-                <span className="text-[16px]">
-                  Miễn phí giao hàng toàn quốc{" "}
-                </span>
+                <FaCheck size={14} /> <span className="text-[16px]">Miễn phí giao hàng toàn quốc </span>
               </li>
               <li className="flex items-center gap-3 text-gray-700">
                 {" "}
-                <FaCheck size={14} />{" "}
-                <span className="text-[16px]">Giao hàng hỏa tốc</span>
+                <FaCheck size={14} /> <span className="text-[16px]">Giao hàng hỏa tốc</span>
               </li>
             </ul>
             {/* số lượng hàng mua */}
@@ -213,19 +207,15 @@ const ProductDetail = () => {
 
         {/* list product */}
         <div className="mt-5 flex gap-7 overflow-x-scroll py-3">
-          {products?.filter(
-              (vail) =>
-                vail.brands === product.brands &&
-                vail._id !== product._id
-            )
+          {products
+            ?.filter((vail) => vail.brands === product.brands && vail._id !== product._id)
             .map((item, index) => {
               return (
                 <Link key={index} to={`/product/product-detail/${item._id}`}>
                   <Card props={item} key={index} />
                 </Link>
-              )
-            })
-          }
+              );
+            })}
         </div>
       </div>
     </div>

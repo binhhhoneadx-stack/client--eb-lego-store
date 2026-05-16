@@ -2,6 +2,7 @@ import { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { AppContext } from "../Context/ThemeContext";
+import { baseUrl } from "../env";
 
 const UpdateAddress = () => {
   const { currentUser, setOpenAddress, openAddress } = useContext(AppContext);
@@ -27,22 +28,21 @@ const UpdateAddress = () => {
   const FetchData = async () => {
     try {
       const result = await axios.get(
-        `http://localhost:8080/api/address/get-item-address/${openAddress.address}&${currentUser?.user._id}`
+        `${baseUrl}/api/address/get-item-address/${openAddress.address}&${currentUser?.user._id}`,
       );
       setFormData({
         username: result?.data[0].username,
         phone: result?.data[0].phone,
         address: result?.data[0].address,
       });
-      console.log(result.data)
+      console.log(result.data);
     } catch (error) {
       console.log(error.response?.data);
     }
   };
 
   useEffect(() => {
-    if(openAddress.isOpen) 
-        FetchData();
+    if (openAddress.isOpen) FetchData();
   }, [openAddress]);
 
   //   update address
@@ -50,8 +50,8 @@ const UpdateAddress = () => {
     e.preventDefault();
     try {
       const result = await axios.put(
-        `http://localhost:8080/api/address/update-item-address/${openAddress.address}&${currentUser?.user._id}`,
-        formData 
+        `${baseUrl}/api/address/update-item-address/${openAddress.address}&${currentUser?.user._id}`,
+        formData,
       );
       setFormData({
         username: "",
@@ -70,9 +70,7 @@ const UpdateAddress = () => {
   };
   return (
     <div className="2xl:w-[30%] max-h-[50%] bg-white rounded-md p-7">
-      <h1 className="text-[25px] text-gray-600 font-[600] pb-3 border-b border-gray-300">
-        Cập nhật địa chỉ
-      </h1>
+      <h1 className="text-[25px] text-gray-600 font-[600] pb-3 border-b border-gray-300">Cập nhật địa chỉ</h1>
       <div className="mt-7">
         <form>
           <div className="flex items-center justify-between">
@@ -118,7 +116,7 @@ const UpdateAddress = () => {
               onClick={handleUpdateItemAddress}
               className="bg-red-500 py-2 w-[120px] rounded-md text-[18px] cursor-pointer font-[500] text-white"
             >
-                Cập nhật
+              Cập nhật
             </button>
           </div>
         </form>

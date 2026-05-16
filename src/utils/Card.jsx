@@ -3,12 +3,13 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { AppContext } from "../Context/ThemeContext";
 import { useContext } from "react";
+import { baseUrl } from "../env";
 
 // react icons
 import { FaShoppingCart, FaEye } from "react-icons/fa";
 
 const Card = ({ props }) => {
-  const fetchApiCreateCart = "http://localhost:8080/api/cart/create-cart";
+  const fetchApiCreateCart = `${baseUrl}/api/cart/create-cart`;
   const { currentUser } = useContext(AppContext);
 
   // Định dạng tiền tệ VND
@@ -33,11 +34,7 @@ const Card = ({ props }) => {
     <div className="w-[210px] h-[300px] border border-gray-200 rounded-md p-5 bg-white group cursor-pointer m-auto">
       {/* image */}
       <div className="h-[60%] w-full overflow-hidden relative cursor-pointer">
-        <img
-          src={`http://localhost:8080/${props.images[0]}`}
-          alt=""
-          className="object-cover w-full h-full"
-        />
+        <img src={`$${baseUrl}/${props.images[0]}`} alt="" className="object-cover w-full h-full" />
         <div className="absolute bottom-[-50px] rounded-md text-black group-hover:bottom-2 transition-all duration-500 ease-in-out left-[50%] translate-x-[-50%] flex items-center gap-5 ">
           {currentUser.isUser === false ? (
             <Link to={"/customer/account/login"}>
@@ -56,9 +53,7 @@ const Card = ({ props }) => {
       {/* info */}
       <div className="mt-3">
         <h3 className="truncate">{props.name}</h3>
-        <p className="mt-3 text-[20px] text-red-600 font-[600]">
-          {formatVND.format(props.price)}
-        </p>
+        <p className="mt-3 text-[20px] text-red-600 font-[600]">{formatVND.format(props.price)}</p>
       </div>
     </div>
   );
